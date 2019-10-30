@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("tkluu10/webgoat/webgoat-server")
+                    app = docker.build("webgoat/webgoat-server")
                     app.inside {
                         sh 'echo $(curl localhost:8080)'
                     }
