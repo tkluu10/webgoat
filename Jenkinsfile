@@ -9,7 +9,7 @@ pipeline {
         stage('Maven Build') {
             steps {
                 container('maven') {
-                sh 'mvn install'
+                sh 'mvn -DskipTests clean package'
                 }
             }
         }
@@ -18,7 +18,7 @@ pipeline {
                 sh 'cd webgoat-server'
                 container('docker') {
                     script {
-                        app = docker.build("tkluu10/webgoat")
+                        app = docker.build("tkluu10/webgoat", "./webgoat-server")
                     }
                 }
             }
