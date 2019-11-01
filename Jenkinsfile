@@ -1,35 +1,36 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.6.2'
-        jdk 'jdk8'
-    }
-    stages {
-        stage('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                    '''
+            maven 'Maven 3.6.2'
+            jdk 'jdk8'
         }
-        stage('Build') { 
-            steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
+        stages {
+            stage('Initialize') {
+                steps {
+                    sh '''
+                        echo "PATH = ${PATH}"
+                        echo "M2_HOME = ${M2_HOME}"
+                        '''
             }
-        }
-        stage('Build Docker Image') {
-            steps {
-                echo "Building Docker Image" 
-                    }
+            stage('Build') { 
+                steps {
+                    sh 'mvn -Dmaven.test.failure.ignore=true install'
                 }
-        stage('Push Docker Image'){
-            steps {
-                echo "Pushing Docker Image"               
             }
-        }
-        stage('Production') {
-            steps {
-                echo "Deploying to Production Server"
+            stage('Build Docker Image') {
+                steps {
+                    echo "Building Docker Image" 
+                        }
+                    }
+            stage('Push Docker Image'){
+                steps {
+                    echo "Pushing Docker Image"               
+                }
+            }
+            stage('Production') {
+                steps {
+                    echo "Deploying to Production Server"
+                }
             }
         }
     }
