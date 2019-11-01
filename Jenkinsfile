@@ -1,26 +1,26 @@
 pipeline {
     agent {
         kubernetes {
-            defaultContainer 'jnlp'
-            yaml """
-            apiVersion: v1
-            kind: Pod
-            metadata:
-            labels:
-                jenkins: slave
-            spec:
-            containers:
+                defaultContainer 'jnlp'
+                yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+    labels:
+        jenkins: slave
+    spec:
+        containers:
             - name: maven
-                image: maven:3.6.2-jdk-11-slim
-                command:
-                - cat
-                tty: true
+              image: maven:3.6.2-jdk-11-slim
+              command:
+              - cat
+              tty: true
             - name: docker
-                image: docker:latest
-                command:
-                - cat
-                tty: true
-            """
+              image: docker:latest
+              command:
+              - cat
+              tty: true
+"""
         }
     }
     stages {
