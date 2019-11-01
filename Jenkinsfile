@@ -4,11 +4,6 @@ podTemplate(containers: [
   ]) {
     node(POD_LABEL) {
         stages {
-            stage('Pull from SCM') {
-                steps {
-                    git 'https://github.com/tkluu10/webgoat.git'
-                }
-            }
             stage('Maven Build') {
                 steps {
                     container('maven') {
