@@ -1,38 +1,44 @@
-podTemplate(containers: [
-    containerTemplate(name: 'maven', image: 'maven:3.6.2-jdk-11-slim', ttyEnabled: true, command: 'cat'),
-    containerTemplate(name: 'docker', image: 'docker:latest', ttyEnabled: true, command: 'cat')
-  ]) {
-    node(POD_LABEL) {
-        stages {
-            stage('Maven Build') {
-                steps {
-                    container('maven') {
-                    sh 'mvn -DskipTests clean package'
-                    }
+pipeline {
+    agent {
+        kubernetes {
+            defaultContainer 'jnlp'
+            yamlFile 'KubernetesPod.yaml'
+        }
+    }
+    stages {
+        stage('Maven Build') {
+            steps {
+                container('maven') {
+                sh 'mvn -DskipTests clean package'
                 }
             }
-            stage('Build Docker Image') {
-                steps {
-                    container('docker') {
-                        sh 'cd webgoat-server'
-                        app = docker.build("tkluu10/webgoat")
-                    }
-                }
-            }
-            stage('Push Docker Image') {
-                steps {
-                    container('docker') {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                            app.push("${env.BUILD_NUMBER}")
-                            app.push("latest")    
+        }
+        stage('Build Docker Image') {
+            steps {
+                container('docker') {
+                    sh 'cd webgoat-server'
+                        script {
+                            app = docker.build("tkluu10/webgoat")
                         }
-                    }      
+                    }
                 }
-            } 
-            stage('Deploy to Production') {
-                steps {
-                    echo "Deploying to Production Server"
-                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                container('docker') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                        script {
+                            app.push("${env.BUILD_NUMBER}")
+                            app.push("latest")  
+                        }
+                    }
+                }      
+            }
+        } 
+        stage('Deploy to Production') {
+            steps {
+                echo "Deploying to Production Server"
             }
         }
     }
