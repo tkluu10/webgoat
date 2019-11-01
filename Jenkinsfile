@@ -9,15 +9,15 @@ pipeline {
         stage('Maven Build') {
             steps {
                 container('maven') {
-                sh 'mvn -DskipTests clean package'
+                sh 'mvn install -Dmaven.test.skip=true'
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
+                sh 'cd ~/webgoat-server'
                 container('docker') {
                     script {
-                        cd webgoat-server
                         app = docker.build("tkluu10/webgoat")
                     }
                 }
