@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        openshift {
+        kubernetes {
             defaultContainer 'jnlp'
             yaml """
             apiVersion: v1
