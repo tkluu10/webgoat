@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
             maven 'maven'
-            jdk 'jdk8'
+            jdk 'jdk11'
         }
         stages {
             stage('Initialize') {
@@ -21,9 +21,9 @@ pipeline {
             stage('Build Docker Image') {
                 steps {
                     echo "Building Docker Image" 
-                        }
                     }
-            stage('Push Docker Image'){
+                }
+            stage('Push Docker Image') {
                 steps {
                     echo "Pushing Docker Image"               
                 }
