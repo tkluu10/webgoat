@@ -3,12 +3,11 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'jdk11'
+        docker 'docker'
     }
 
         stages {
             stage('Initialize') {
-            def dockerHome = tool 'docker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
                 steps {
                     sh '''
                         echo "PATH = ${PATH}"
