@@ -9,7 +9,7 @@ pipeline {
         stage('Maven Build') {
             steps {
                 container('maven') {
-                sh 'mvn -Dmaven.test.skip=true clean package'
+                sh 'mvn -DskipTests clean package'
                 }
             }
         }
