@@ -9,7 +9,7 @@ pipeline {
         stage('Maven Build') {
             steps {
                 container('maven') {
-                sh 'mvn install -Dmaven.test.skip=true'
+                sh 'mvn install'
                 }
             }
         }
