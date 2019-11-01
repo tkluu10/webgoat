@@ -29,7 +29,7 @@ pipeline {
             }
         }
         stage('Production') {
-            when {
+            steps {
                 echo "Deploying to Production Server"
             }
         }
