@@ -1,9 +1,9 @@
 pipeline {
     agent any
     tools {
-            maven 'maven'
-            jdk 'jdk11'
-        }
+        maven 'maven'
+        jdk 'jdk11'
+    }
         stages {
             stage('Initialize') {
                 steps {
@@ -15,12 +15,18 @@ pipeline {
             }
             stage('Build') { 
                 steps {
-                    sh 'mvn -Dmaven.test.failure.ignore=true install'
+                    sh 'mvn package'
                 }
             }
             stage('Build Docker Image') {
                 steps {
-                    echo "Building Docker Image" 
+                    withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "docker build -t tkluu10/webgoat:${env.BUILD_ID} ."
+                        sh "docker tag tkluu10/webgoat:${env.build_ID} tkluu10/webgoat:latest"
+                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                        sh "docker push tkluu10/webgoat:${env.BUILD_ID}"
+                        sh "docker push tkluu10/webgoat:latest"
+                        }
                     }
                 }
             stage('Push Docker Image') {
@@ -31,6 +37,11 @@ pipeline {
             stage('Production') {
                 steps {
                     echo "Deploying to Production Server"
+                }
+            }
+        post {
+            always {
+                archive 'target/**/*.jar'
                 }
             }
         }
