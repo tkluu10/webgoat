@@ -1,8 +1,10 @@
 pipeline {
     agent {
-        docker {
-            image 'maven:3.6.2-jdk-11-slim'
-        }
+        dockerfile true
+    }
+    tools {
+        maven 'maven'
+        jdk 'jdk11'
     }
 
         stages {
