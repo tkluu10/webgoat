@@ -2,7 +2,7 @@ pipeline {
     agent {
         kubernetes {
             defaultContainer 'jnlp'
-            yamlFile 'KubernetesPod.yaml'
+            yamlFile 'KubernetesPod.yml'
         }
     }
     stages {
@@ -26,8 +26,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 container('docker') {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                        script {
+                    script {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker') {
                             app.push("${env.BUILD_NUMBER}")
                             app.push("latest")  
                         }
