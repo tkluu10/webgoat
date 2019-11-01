@@ -39,10 +39,5 @@ pipeline {
                     echo "Deploying to Production Server"
                 }
             }
-        post {
-            always {
-                archive 'target/**/*.jar'
-                }
-            }
         }
     }
