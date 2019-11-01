@@ -23,7 +23,6 @@ pipeline {
                     }
                 }
             }
-        }
         stage('Push Docker Image') {
             steps {
                 container('docker') {
