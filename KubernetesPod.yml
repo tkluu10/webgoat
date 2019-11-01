@@ -12,16 +12,18 @@ spec:
     tty: true
   - name: docker
     image: docker:latest
-    command:
-    - cat
-    tty: true
+    securityContext:
+      privileged: true
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
-    securityContext:
-      privileged: true
+    command:
+    - cat
+    tty: true
   volumes:
-    - name: docker-socket-volume
-      hostPath:
-        path: /var/run/docker.sock
-        type: File
+  - name: docker-socket-volume
+    hostPath:
+      path: /var/run/docker.sock
+      type: File
+    
+
