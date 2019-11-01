@@ -21,8 +21,6 @@ pipeline {
                 echo "Building Docker Image" 
                     }
                 }
-            }
-        }
         stage('Push Docker Image'){
             steps {
                 echo "Pushing Docker Image"               
@@ -35,3 +33,4 @@ pipeline {
         }
     }
 }
+
