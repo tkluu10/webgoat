@@ -15,23 +15,24 @@ pipeline {
             }
             stage('Build') { 
                 steps {
-                    sh 'mvn package'
+                    sh 'mvn clean package'
                 }
             }
             stage('Build Docker Image') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "docker build -t tkluu10/webgoat:${env.BUILD_ID} ."
-                        sh "docker tag tkluu10/webgoat:${env.build_ID} tkluu10/webgoat:latest"
-                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                        sh "docker push tkluu10/webgoat:${env.BUILD_ID}"
-                        sh "docker push tkluu10/webgoat:latest"
-                        }
+                    script {
+                        sh 'cd webgoat-server'
+                        app = docker.build("tkluu10/webgoat")
                     }
                 }
+            }
             stage('Push Docker Image') {
                 steps {
-                    echo "Pushing Docker Image"               
+                    script {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker')
+                        app.push("${env.BUILD_NUMBER")
+                        app.push("latest")
+                    }        
                 }
             }
             stage('Production') {
