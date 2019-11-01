@@ -15,6 +15,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
+                sh 'cd /home/jenkins/agent/workspace/WebGoat_master/webgoat-server'
                 container('docker') {
                     script {
                         app = docker.build("tkluu10/webgoat")
