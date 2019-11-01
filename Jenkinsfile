@@ -1,15 +1,20 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.6.2'
+        jdk 'jdk8'
+    }
     stages {
-        stage('Build') {
-            def mvnHome = tool name: 'maven', type: 'maven' 
+        stage('Initialize') {
             steps {
-                sh "${mvnHome}/bin/mvn package"
-            }
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                    '''
         }
-        stage('Test') { 
+        stage('Build') { 
             steps {
-                echo "Executing Unit Tests" 
+                sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
         }
         stage('Build Docker Image') {
