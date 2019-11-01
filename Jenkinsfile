@@ -16,13 +16,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 container('docker') {
-                    sh 'cd webgoat-server'
-                        script {
-                            app = docker.build("tkluu10/webgoat")
-                        }
+                    script {
+                        app = docker.build("tkluu10/webgoat")
                     }
                 }
             }
+        }
         stage('Push Docker Image') {
             steps {
                 container('docker') {
