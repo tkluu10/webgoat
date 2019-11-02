@@ -10,11 +10,14 @@ spec:
       image: 'maven:3.6.2-jdk-11-slim'
       name: maven
       tty: true
+      securityContext:
     - command:
         - cat
       image: 'docker:latest'
       name: docker
       tty: true
+      securityContext:
+        privileged: true
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: docker-socket
