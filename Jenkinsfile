@@ -67,9 +67,9 @@ pipeline {
                 }      
             }
         } 
-        stage('Deploy to Production') {
+        stage('Deploy to Staging Environment') {
             steps {
-                echo "Deploying to Production Server"
+                echo "Deploying to Staging Server"
             }
         }
     }
