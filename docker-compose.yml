@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   webgoat:
-    image: webgoat/webgoat-8.0
+    image: tkluu10/webgoat:latest
     environment:
       - WEBWOLF_HOST=webwolf
       - WEBWOLF_PORT=9090

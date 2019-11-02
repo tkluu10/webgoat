@@ -13,22 +13,25 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
+        stage('Build Docker Images') {
             steps {
                 container('docker') {
                     script {
-                        app = docker.build("tkluu10/webgoat", "./webgoat-server")
+                        webgoat = docker.build("tkluu10/webgoat", "./webgoat-server")
+                        webwolf = docker.build("tkluu10/webwolf", "./webwolf")
                     }
                 }
             }
         }
-        stage('Push Docker Image') {
+        stage('Push Docker Images') {
             steps {
                 container('docker') {
                     script {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                            app.push("${env.BUILD_NUMBER}")
-                            app.push("latest")  
+                            webgoat.push("${env.BUILD_NUMBER}")
+                            webgoat.push("latest")
+                            webwolf.push("${env.BUILD_NUMBER}")
+                            webwolf.push("latest")    
                         }
                     }
                 }      
