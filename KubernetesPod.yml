@@ -18,6 +18,8 @@ spec:
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: docker-socket
+      securityContext:
+        privileged: true
   volumes:
     - emptyDir: {}
       name: docker-socket
