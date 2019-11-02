@@ -7,11 +7,10 @@ pipeline {
     }
     stages {
         stage('Build & Scan') {
-            steps{
+            steps {
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
                         sh 'mvn -DskipTests clean package sonar:sonar'
-                        }
                     }
                 }
             }
