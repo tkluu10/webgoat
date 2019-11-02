@@ -74,11 +74,13 @@ pipeline {
         }
         stage('OWASP ZAP Report') {
             steps {
-                node('zap') {
+                container('zap') {
                     dir('/zap') {
-                        def retVal = sh returnStatus: true, script: '/zap/zap-baseline.py -r baseline.html -t http://3.230.142.132:8080/WebGoat/'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '/zap/wrk', reportFiles: 'baseline.html', reportName: 'ZAP Baseline Scan', reportTitles: 'ZAP Baseline Scan'])
-                        echo "Return value is: ${retVal}"
+                        script {
+                            def retVal = sh returnStatus: true, script: '/zap/zap-baseline.py -r baseline.html -t http://3.230.142.132:8080/WebGoat/'
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '/zap/wrk', reportFiles: 'baseline.html', reportName: 'ZAP Baseline Scan', reportTitles: 'ZAP Baseline Scan'])
+                            echo "Return value is: ${retVal}"
+                        }
                     }
                 }
             }
