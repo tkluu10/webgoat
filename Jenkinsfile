@@ -10,7 +10,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
-                        sh 'mvn -DskipTests clean package sonar:sonar'
+                        sh 'mvn -DskipTests package sonar:sonar'
                     }
                 }
             }
