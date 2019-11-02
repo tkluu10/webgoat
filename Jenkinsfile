@@ -10,7 +10,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
-                        sh 'mvn -DskipTests package sonar:sonar'
+                        sh 'mvn -DskipTests package sonar:sonar org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
                     }
                 }
             }
@@ -20,6 +20,14 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        stage ('Dependency-Track') {
+            steps {
+                dependencyTrackPublisher artifact: '${WORKSPACE}/target/bom.xml', 
+                artifactType: 'bom',
+                projectId: '2e110698-3e6f-4369-a481-47c922695568',
+                synchronous: true
             }
         }
         stage('Build Docker Image') {
