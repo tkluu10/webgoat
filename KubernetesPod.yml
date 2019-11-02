@@ -9,19 +9,14 @@ spec:
         - cat
       image: 'maven:3.6.2-jdk-11-slim'
       name: maven
+      resources: {}
       tty: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    jenkins: slave
-spec:
-  containers:
+      securityContext:
     - command:
         - cat
       image: 'docker:latest'
       name: docker
+      resources: {}
       tty: true
       securityContext:
         privileged: true
