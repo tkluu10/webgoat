@@ -5,25 +5,13 @@ metadata:
     jenkins: slave
 spec:
   containers:
-  - name: maven
-    image: maven:3.6.2-jdk-11-slim
-    command:
-    - cat
-    tty: true
-  - name: docker
-    image: docker:latest
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-socket-volume
-    command:
-    - cat
-    tty: true
-  volumes:
-  - name: docker-socket-volume
-    hostPath:
-      path: /var/run/docker.sock
-      type: File
-    
-
+    - name: maven
+      image: maven:3.6.2-jdk-11-slim
+      command:
+      - cat
+      tty: true
+    - name: docker
+      image: docker:latest
+      command:
+      - cat
+      tty: true
