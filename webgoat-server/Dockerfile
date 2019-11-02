@@ -1,6 +1,6 @@
 FROM openjdk:11.0.1-jre-slim-stretch
 
-ARG webgoat_version=v8.0.0-SNAPSHOT
+ARG webgoat_version=v8.0.0.M25
 
 RUN cd ./WebGoat_master; mkdir -p .webgoat-${webgoat_version}
 COPY target/webgoat-server-${webgoat_version}.jar ./WebGoat_master/webgoat.jar
