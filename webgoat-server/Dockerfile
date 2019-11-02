@@ -4,13 +4,13 @@ ARG webgoat_version=v8.0.0-SNAPSHOT
 
 RUN \
   apt-get update && apt-get install && \
-  useradd --home-dir /home/webgoat --create-home -U webgoat
+  useradd --home-dir /home/jenkins/agent/workspace/WebGoat_master --create-home -U webgoat
 
 USER webgoat
-RUN cd /home/webgoat/; mkdir -p .webgoat-${webgoat_version}
-COPY target/webgoat-server-${webgoat_version}.jar /home/webgoat/webgoat.jar
+RUN cd /home/jenkins/agent/workspace/WebGoat_master; mkdir -p .webgoat-${webgoat_version}
+COPY target/webgoat-server-${webgoat_version}.jar /home/jenkins/agent/workspace/WebGoat_master/webgoat.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/home/webgoat/webgoat.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/home/jenkins/agent/workspace/WebGoat_master/webgoat.jar"]
 CMD ["--server.port=8080", "--server.address=0.0.0.0"]
