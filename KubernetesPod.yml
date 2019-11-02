@@ -15,5 +15,3 @@ spec:
       image: 'docker:latest'
       name: docker
       tty: true
-      securityContext:
-        privileged: true
