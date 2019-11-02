@@ -73,8 +73,8 @@ pipeline {
             }
         }
         stage('OWASP ZAP Report') {
-            steps {
-                container('zap') {
+            node ('zap') {
+                steps {
                     sh "/zap/zap-baseline.py -d -m 5 -x zaprpt.xml -t http://3.230.142.132:8080/WebGoat"
                     stash name: "zaproxyreport", includes: "/zap/wrk/zaprpt.xml"
                 }
