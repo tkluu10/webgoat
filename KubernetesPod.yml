@@ -19,5 +19,7 @@ spec:
         - mountPath: /var/run/docker.sock
           name: docker-socket
   volumes:
-    - hostPath: /var/run/docker.sock
-      name: docker-socket
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: File
