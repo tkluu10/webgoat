@@ -10,6 +10,7 @@ pipeline {
             steps{
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
+                        sh '-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true'
                         sh 'mvn -DskipTests clean package'
                         withSonarQubeEnv('sonarqube') {
                             sh 'mvn sonar:sonar'
