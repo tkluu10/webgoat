@@ -11,7 +11,7 @@ spec:
     - cat
     tty: true
   - name: zap
-    image: zap2docker-stable:latest
+    image: 'zap2docker-stable:latest'
     command:
     - cat
     tty: true
