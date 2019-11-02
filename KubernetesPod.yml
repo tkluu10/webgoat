@@ -10,6 +10,8 @@ spec:
     command:
     - cat
     tty: true
+    securityContext:
+      privileged: true
   - name: docker
     image: 'docker:latest'
     command:
@@ -23,4 +25,4 @@ spec:
   volumes:
   - name: docker-sock
     hostPath:
-    path: /var/run/docker.sock
+      path: /var/run/docker.sock
