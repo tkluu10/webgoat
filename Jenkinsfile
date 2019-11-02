@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-        stage('Scan & Build') {
+        stage('Build & Scan') {
             steps{
                 container('maven') {
                     sh 'mvn -DskipTests clean package'
