@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages {
-        stage('Scan & Build')
+        stage('Scan & Build') {
             steps{
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
