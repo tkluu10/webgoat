@@ -8,14 +8,16 @@ pipeline {
     stages {
         stage('Build & Scan') {
             steps{
-                container('maven') {
-                    sh 'mvn -DskipTests clean package'
-                    }
                 withSonarQubeEnv('sonarqube') {
-                    sh 'mvn sonar:sonar'
+                    container('maven') {
+                        sh 'mvn -DskipTests clean package'
+                        withSonarQubeEnv('sonarqube') {
+                            sh 'mvn sonar:sonar'
+                        }
                     }
                 }
             }
+        }
         stage('Quality Gate'){
             steps {
                 timeout(time: 1, unit: 'HOURS') {
