@@ -6,32 +6,29 @@ pipeline {
         }
     }
     stages {
-        stage('Maven Build') {
+        stage('Build Maven Project') {
             steps {
                 container('maven') {
                 sh 'mvn -DskipTests clean package'
                 }
             }
         }
-        stage('Build Docker Images') {
+        stage('Build Docker Image') {
             steps {
                 container('docker') {
                     script {
                         webgoat = docker.build("tkluu10/webgoat", "./webgoat-server")
-                        webwolf = docker.build("tkluu10/webwolf", "./webwolf")
                     }
                 }
             }
         }
-        stage('Push Docker Images') {
+        stage('Push Docker Image') {
             steps {
                 container('docker') {
                     script {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker') {
                             webgoat.push("${env.BUILD_NUMBER}")
-                            webgoat.push("latest")
-                            webwolf.push("${env.BUILD_NUMBER}")
-                            webwolf.push("latest")    
+                            webgoat.push("latest") 
                         }
                     }
                 }      
