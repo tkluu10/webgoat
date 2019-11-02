@@ -76,8 +76,8 @@ pipeline {
             steps {
                 container('zap') {
                     script {
-                        def retVal = sh returnStatus: true, script: '/zap/zap-baseline.py -r baseline.html -t http://3.230.142.132:8080'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '/zap/wrk', reportFiles: 'baseline.html', reportName: 'ZAP Baseline Scan', reportTitles: 'ZAP Baseline Scan'])
+                        def retVal = sh returnStatus: true, script: './zap/zap-baseline.py -r zapreport.html -t http://3.230.142.132:8080'
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './zap/wrk', reportFiles: 'zapreport.html', reportName: 'ZAP Baseline Scan', reportTitles: 'ZAP Baseline Scan'])
                         echo "Return value is: ${retVal}"
                     }
                 }
