@@ -72,8 +72,9 @@ pipeline {
                 echo "Deploying to Staging Server"
             }
         }
-       // stage('OWASP ZAP Report') {
-       //     steps {
+        stage('OWASP ZAP Report') {
+            steps {
+                echo 'Running attack scripts...'
        //         container('zap') {
        //             script {
        //                 def retVal = sh returnStatus: true, script: './zap/zap-baseline.py -r zapreport.html -t http://3.230.142.132:8080'
@@ -81,7 +82,7 @@ pipeline {
        //                 echo "Return value is: ${retVal}"
        //             }
        //         }
-       //     }
-       // }
+            }
+        }
     }
-}
+}`
