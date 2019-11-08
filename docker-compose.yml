@@ -3,6 +3,8 @@ version: '2.1'
 services:
   webgoat:
     image: tkluu10/webgoat:latest
+    deploy:
+      restart_policy: always
     environment:
       - WEBWOLF_HOST=webwolf
       - WEBWOLF_PORT=9090
