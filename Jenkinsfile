@@ -70,6 +70,11 @@ pipeline {
         stage('Deploy to Staging Environment') {
             steps {
                 echo "Deploying to Staging Server"
+                sshagent(credentials : ['webgoat-staging']) {
+                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@$webgoat_staging_ip'
+                    sh 'ssh -v ec2-user@$webgoat_staging_ip'
+                    sh './deploy.sh'
+                }
             }
         }
         stage('OWASP ZAP Report') {
