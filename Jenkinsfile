@@ -71,9 +71,8 @@ pipeline {
             steps {
                 echo "Deploying to Staging Server"
                 sshagent(credentials : ['webgoat-staging']) {
-                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@$webgoat_staging_ip'
+                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@$webgoat_staging_ip ./deploy.sh'
                     sh 'ssh -v ec2-user@$webgoat_staging_ip'
-                    sh './deploy.sh'
                 }
             }
         }
