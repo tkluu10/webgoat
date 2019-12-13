@@ -26,7 +26,7 @@ pipeline {
             steps {
                 dependencyTrackPublisher artifact: './target/bom.xml', 
                 artifactType: 'bom',
-                projectId: '2e110698-3e6f-4369-a481-47c922695568',
+                projectId: 'b7595fff-0d27-40d7-bd25-1198bdd01a4d',
                 synchronous: true,
                 failedNewCritical: 1,
                 failedNewHigh: 1,
