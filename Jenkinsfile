@@ -1,4 +1,10 @@
 pipeline {
+    environment {
+        registry_credential = 'docker'
+        staging_credential = 'webgoat-staging'
+        staging_ip = "35.172.224.39"
+        staging_user = "ec2-user"
+    }
     agent {
         kubernetes {
             defaultContainer 'jnlp'
@@ -6,8 +12,16 @@ pipeline {
         }
     }
     stages {
-        stage('Maven Build & Sonar Scan') {
+        stage('Clone Repository') {
             steps {
+                echo 'Cloning repository...'
+                git 'https://github.com/tkluu10/webgoat.git'
+            }
+        }
+        stage('SAST') {
+            steps {
+                echo 'Performing static code analysis with SonarQube...'
+                echo 'Generating list of dependencies...'
                 withSonarQubeEnv('sonarqube') {
                     container('maven') {
                         sh 'mvn -DskipTests package sonar:sonar org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
@@ -15,15 +29,17 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Quality Gate'){
+        stage('Quality Gate'){
             steps {
+                echo 'Waiting for Quality Gate results...'
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
-        stage ('OWASP Dependency-Track') {
+        stage ('Publish to Dependency Track') {
             steps {
+                echo 'Publishing list of dependencies to Dependency Track...'
                 dependencyTrackPublisher artifact: './target/bom.xml', 
                 artifactType: 'bom',
                 projectId: '2e110698-3e6f-4369-a481-47c922695568',
@@ -48,6 +64,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
+                echo 'Building application into Docker image...'
                 container('docker') {
                     script {
                         webgoat = docker.build("tkluu10/webgoat", "./webgoat-server")
@@ -57,9 +74,10 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps {
+                echo 'Pushing Docker image to DockerHub...'
                 container('docker') {
                     script {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                        docker.withRegistry('https://registry.hub.docker.com', registry_credential) {
                             webgoat.push("${env.BUILD_NUMBER}")
                             webgoat.push("latest") 
                         }
@@ -67,11 +85,21 @@ pipeline {
                 }      
             }
         }
-        stage('Deploy to Staging Environment') {
+        stage('Deploy to Staging Server') {
             steps {
-                echo "Deploying to Staging Server"
-                sshagent(credentials : ['webgoat-staging']) {
-                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@$webgoat_staging_ip ./deploy.sh'
+                echo "Deploying to staging server..."
+                sshagent(credentials : [staging_credential]) {
+                    sh 'ssh -o StrictHostKeyChecking=no ${staging_user}@${staging_ip} ./deploy.sh'
+                }
+            }
+        }
+        stage('DAST') {
+            steps {
+                echo "Running ZAP baseline scan..."
+                container('zap') {
+                    script {
+                        sh './zap-baseline.py -t http://${staging_ip}:8080 -r report.html || true'
+                    }
                 }
             }
         }
