@@ -1,9 +1,9 @@
 pipeline {
     environment {
-        registry_credential = 'docker'
-        staging_credential = 'webgoat-staging'
-        staging_ip = "35.172.224.39"
-        staging_user = "ec2-user"
+        registry_credential = 'docker' // Credentials to DockerHub account stored within Jenkins
+        staging_credential = 'webgoat-staging' // Credentials for staging server stored within Jenkins
+        staging_ip = "xx.xx.xx.xx" // IP address of staging server removed for security purposes
+        staging_user = "ec2-user" // Username of staging server hosted on AWS EC2 instance
     }
     agent {
         kubernetes {
