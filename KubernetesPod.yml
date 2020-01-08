@@ -5,6 +5,11 @@ metadata:
     jenkins: slave
 spec:
   containers:
+  - name: jnlp
+    image: 'jenkinsci/jnlp-slave'
+    command:
+    - cat
+    tty: true
   - name: maven
     image: 'maven:3.6.2-jdk-11-slim'
     command:
