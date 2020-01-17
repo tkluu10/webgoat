@@ -21,7 +21,7 @@ spec:
     - cat
     tty: true
     securityContext:
-      privileged: true
+      privileged: false
     volumeMounts:
     - name: docker-sock
       mountPath: /var/run/docker.sock
