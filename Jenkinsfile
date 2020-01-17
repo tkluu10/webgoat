@@ -6,7 +6,7 @@ pipeline {
         staging_user = "ec2-user" // Username of staging server hosted on AWS EC2 instance
     }
     agent {
-        openshift {
+        kubernetes {
             defaultContainer 'jnlp'
             yamlFile 'KubernetesPod.yml'
         }
